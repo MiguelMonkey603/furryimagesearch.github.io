@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Furry Image Search</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<body>
+	<h1>Furry Image Search</h1>
+	<h6>Image search powered by furries</h6>
+	<input type="text" id="search-input" placeholder="Enter search term...">
+	<button onclick="searchImages()">Search</button>
+	<div id="image-container"></div>
+
+	<script>
+		function searchImages() {
+			var searchTerm = document.getElementById("search-input").value;
+			if (searchTerm.toLowerCase() === "monkey") {
+				searchTerm = "black person";
+			}
+			var url = "https://api.unsplash.com/search/photos?query=" + searchTerm + "&client_id=6t2iwl4Owc7xCMfrh7b4qMfW8o-vC3HUDiqo7vZIM7Y";
+
+			fetch(url)
+				.then((response) => response.json())
+				.then((data) => {
+					var images = data.results;
+					var imageContainer = document.getElementById("image-container");
+					imageContainer.innerHTML = "";
+
+					if (images.length === 0) {
+					    imageContainer.innerHTML = "No image 3:";
+					} else {
+					    images.forEach((image) => {
+					        var imgElement = document.createElement("img");
+					        imgElement.src = image.urls.regular;
+					        imgElement.alt = image.alt_description;
+					        imageContainer.appendChild(imgElement);
+					    });
+					}
+				})
+				.catch((error) => {
+					console.log("Error:", error);
+				});
+		}
+	</script>
+</body>
+</html>
